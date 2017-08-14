@@ -12,21 +12,17 @@ public class DutchPay {
 
     ArrayList moneyList = new ArrayList<Integer>();
     int firstMoney = 0;
+    int secondMoney = 0;
     int restMoney = 0;
 
 
     public ArrayList calcMoney(int won,int personnel){
-
         if(personnel  < 2)
             moneyList.add(won);
         else if(won  < 1 )
             moneyList.add(0);
-        else {
+        else
             divide(won, personnel);
-            moneyList.add(firstMoney);
-            for (int i = 0; i < personnel-1; i++)
-                moneyList.add(restMoney);
-        }
         System.out.println(moneyList);
         return moneyList;
     }
@@ -35,6 +31,39 @@ public class DutchPay {
         double doubleWon = won / (double)personnel;
         restMoney = (int) ((Math.round(doubleWon / 100)) * 100);
         firstMoney = won - (restMoney * (personnel-1));
+
+//        if (firstMoney > 0) {
+            moneyList.add(firstMoney);
+            for (int i = 0; i < personnel-1; i++)
+                moneyList.add(restMoney);
+//        } else {    // first money 가 0이면 딱 딱맞아떨어진다는 뜻
+//
+//            System.out.println("rest money " + restMoney);
+//
+//            int tmpRestMoney = 0;
+//            while ((tmpRestMoney + restMoney) < won) {
+//                tmpRestMoney += restMoney;
+//            }
+//
+//            int tmp = won - tmpRestMoney;
+//            for (int i = 0; i < personnel-2; i++)
+//                moneyList.add(restMoney);
+
+//            firstMoney = restMoney / 2 ;
+//            secondMoney = restMoney / 2 ;
+//            moneyList.add(firstMoney);
+//            moneyList.add(secondMoney);
+//            for (int i = 0; i < personnel-2; i++) {
+//                moneyList.add(restMoney);
+//            }
+
+//            System.out.println(firstMoney);
+//            System.out.println(secondMoney);
+//            System.out.println(restMoney);
+
+
+//        }
+
     }
 
 }

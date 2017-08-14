@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -12,6 +13,7 @@ public class DutchPayTest {
 
 
     private DutchPay dutchpay;
+    private int totalMoney;
 
     @Before
     public void create_dutchPay_class(){
@@ -39,48 +41,54 @@ public class DutchPayTest {
     }
 
     @Test
-    public void calc_1000won_and_3people(){
-        ArrayList arrayList = dutchpay.calcMoney(1002, 3);
-        Assert.assertThat(402,is(arrayList.get(0)));
-        Assert.assertThat(300,is(arrayList.get(1)));
-        Assert.assertThat(300,is(arrayList.get(2)));
+    public void calc_1002won_and_3people(){
+        totalMoney = 1002;
+        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 3);
+        Assert.assertThat(totalMoney,is(getSum(arrayList)));
     }
 
     @Test
     public void calc_1005won_and_3people(){
-        ArrayList arrayList = dutchpay.calcMoney(1005, 3);
-        Assert.assertThat(405,is(arrayList.get(0)));
-        Assert.assertThat(300,is(arrayList.get(1)));
-        Assert.assertThat(300,is(arrayList.get(2)));
+        totalMoney = 1005;
+        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 3);
+
+        Assert.assertThat(totalMoney,is(getSum(arrayList)));
     }
 
     @Test
     public void calc_10000won_and_4people(){
-        ArrayList arrayList = dutchpay.calcMoney(10000, 4);
-        Assert.assertThat(2500,is(arrayList.get(0)));
-        Assert.assertThat(2500,is(arrayList.get(1)));
-        Assert.assertThat(2500,is(arrayList.get(2)));
-        Assert.assertThat(2500,is(arrayList.get(3)));
+        totalMoney = 10000;
+        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 4);
+
+        Assert.assertThat(totalMoney,is(getSum(arrayList)));
     }
 
     @Test
     public void calc_1196300won_and_3people(){
-        ArrayList arrayList = dutchpay.calcMoney(1196300, 3);
-        Assert.assertThat(398700,is(arrayList.get(0)));
-        Assert.assertThat(398800,is(arrayList.get(1)));
-        Assert.assertThat(398800,is(arrayList.get(2)));
+        totalMoney = 1196300;
+        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 3);
+
+        Assert.assertThat(totalMoney,is(getSum(arrayList)));
     }
 
-        @Test
-    public void calc_850won_and_4people(){
-        ArrayList arrayList = dutchpay.calcMoney(600, 4);
-//        Assert.assertThat(398700,is(arrayList.get(0)));
-//        Assert.assertThat(398800,is(arrayList.get(1)));
-//        Assert.assertThat(398800,is(arrayList.get(2)));
+    @Test
+    public void calc_900won_and_6people(){
+        totalMoney = 900;
+
+        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 6);
+        Assert.assertThat(totalMoney,is(getSum(arrayList)));
+
     }
 
 
 
+    private int getSum(ArrayList list) {
+        int sum = 0;
+        for (int i = 0 ; i < list.size(); i++){
+            sum += (Integer) list.get(i);
+        }
+        return sum;
+    }
 
 
 }
