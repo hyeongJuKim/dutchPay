@@ -80,6 +80,11 @@ public class DutchPayTest {
 
     }
 
+    @Test
+    public void calc2(){
+
+    }
+
 
 
     private int getSum(ArrayList list) {
