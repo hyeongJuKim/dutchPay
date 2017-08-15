@@ -2,6 +2,7 @@ package dutchpay;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -11,79 +12,70 @@ import static org.hamcrest.CoreMatchers.is;
 
 public class DutchPayTest {
 
-
     private DutchPay dutchpay;
-    private int totalMoney;
 
     @Before
     public void create_dutchPay_class(){
         dutchpay = new DutchPay();
     }
 
+
+    @Ignore
     @Test
-    public void calc_0won_and_0people(){
-        dutchpay.calcMoney(0, 0);
+    public void calc_0won_and_0personnel_return_ArrayList_1size_0won(){
+        ArrayList calculate = dutchpay.calculate(0, 0);
+        Assert.assertThat(0,is(calculate.get(0)));
+    }
+
+    @Ignore
+    @Test
+    public void calc_0won_and_1personnel_return_ArrayList_1size_0won(){
+        ArrayList calculate = dutchpay.calculate(0, 1);
+        Assert.assertThat(0,is(calculate.get(0)));
+    }
+
+    @Ignore
+    @Test
+    public void calc_1won_and_1personnel_return_ArrayList_1size_1won(){
+        ArrayList calculate = dutchpay.calculate(1, 1);
+        Assert.assertThat(1,is(calculate.get(0)));
+    }
+
+
+    @Test
+    public void calc_2won_and_1personnel_return_ArrayList_1size_2won(){
+        ArrayList calculate = dutchpay.calculate(2, 1);
+        Assert.assertThat(2,is(calculate.get(0)));
+    }
+
+    @Ignore
+    @Test
+    public void calc_1won_and_2personnel_return_ArrayList_0size_exception(){
+        ArrayList calculate = dutchpay.calculate(1, 2);
+        Assert.assertThat(0,is(calculate.get(0)));
+    }
+
+    @Ignore
+    @Test
+    public void test_exception(){
+        dutchpay.calculate(1,2);
     }
 
     @Test
-    public void calc_0won_and_1people(){
-        dutchpay.calcMoney(0, 1);
+    public void calc_100won_and_2personnel_return_ArrayList_2size_50won(){
+        ArrayList calculate = dutchpay.calculate(100, 2);
+        getSum(calculate);
+        Assert.assertThat(50,is(calculate.get(0)));
     }
 
     @Test
-    public void calc_0won_and_2people(){
-        dutchpay.calcMoney(0, 2);
+    public void calc_100won_and_3personnel_return_ArrayList_3size(){
+        ArrayList calculate = dutchpay.calculate(1101, 7);
+        getSum(calculate);
+//        Assert.assertThat(100,is(getSum(calculate)));
     }
 
-    @Test
-    public void calc_1won_and_1people(){
-        dutchpay.calcMoney(1, 1);
-    }
 
-    @Test
-    public void calc_1002won_and_3people(){
-        totalMoney = 1002;
-        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 3);
-        Assert.assertThat(totalMoney,is(getSum(arrayList)));
-    }
-
-    @Test
-    public void calc_1005won_and_3people(){
-        totalMoney = 1005;
-        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 3);
-
-        Assert.assertThat(totalMoney,is(getSum(arrayList)));
-    }
-
-    @Test
-    public void calc_10000won_and_4people(){
-        totalMoney = 10000;
-        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 4);
-
-        Assert.assertThat(totalMoney,is(getSum(arrayList)));
-    }
-
-    @Test
-    public void calc_1196300won_and_3people(){
-        totalMoney = 1196300;
-        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 3);
-
-        Assert.assertThat(totalMoney,is(getSum(arrayList)));
-    }
-
-    @Test
-    public void calc_900won_and_6people(){
-        totalMoney = 900;
-
-        ArrayList arrayList = dutchpay.calcMoney(totalMoney, 6);
-        Assert.assertThat(totalMoney,is(getSum(arrayList)));
-
-    }
-
-    @Test
-    public void calc2(){
-
-    }
 
 
 
@@ -92,8 +84,15 @@ public class DutchPayTest {
         for (int i = 0 ; i < list.size(); i++){
             sum += (Integer) list.get(i);
         }
+        System.out.println("amount list: " + list);
+        System.out.println("sum amount : " + sum);
         return sum;
     }
+
+
+
+
+
 
 
 }

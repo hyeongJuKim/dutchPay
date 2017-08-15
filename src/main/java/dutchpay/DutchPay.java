@@ -1,69 +1,53 @@
 package dutchpay;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-
-// TODO 100원 이하 돈을 몰아 줄 때 제일 큰 금액을 내는 사람이 아닌 다른 사람에게 몰아 줄 수도 있다.
-// TODO 추가기능 : 총 금액이 아닌 금액과 내용들을 입력받아 sum하기.
 
 // TODO 나중에 서비스 할 때 UI에서는 영수증처럼 출력
 //      거래일자, 거래내역, 함계 등
 
 public class DutchPay {
 
-    ArrayList moneyList = new ArrayList<Integer>();
-    int firstMoney = 0;
-    int secondMoney = 0;
-    int restMoney = 0;
 
+    public ArrayList calculate(int amounts, int personnel) {
+        BigDecimal decimalAmounts = BigDecimal.valueOf(amounts);
+        BigDecimal decimalPersonnel = BigDecimal.valueOf(personnel);
 
-    public ArrayList calcMoney(int won,int personnel){
-        if(personnel  < 2)
-            moneyList.add(won);
-        else if(won  < 1 )
-            moneyList.add(0);
-        else
-            divide(won, personnel);
-        System.out.println(moneyList);
-        return moneyList;
+        tryValidation(decimalAmounts, decimalPersonnel);
+        return divide(decimalAmounts,decimalPersonnel);
     }
 
-    public void divide(int won, int personnel) throws IllegalArgumentException{
-        double doubleWon = won / (double)personnel;
-        restMoney = (int) ((Math.round(doubleWon / 100)) * 100);
-        firstMoney = won - (restMoney * (personnel-1));
 
-//        if (firstMoney > 0) {
-            moneyList.add(firstMoney);
-            for (int i = 0; i < personnel-1; i++)
-                moneyList.add(restMoney);
-//        } else {    // first money 가 0이면 딱 딱맞아떨어진다는 뜻
-//
-//            System.out.println("rest money " + restMoney);
-//
-//            int tmpRestMoney = 0;
-//            while ((tmpRestMoney + restMoney) < won) {
-//                tmpRestMoney += restMoney;
-//            }
-//
-//            int tmp = won - tmpRestMoney;
-//            for (int i = 0; i < personnel-2; i++)
-//                moneyList.add(restMoney);
-
-//            firstMoney = restMoney / 2 ;
-//            secondMoney = restMoney / 2 ;
-//            moneyList.add(firstMoney);
-//            moneyList.add(secondMoney);
-//            for (int i = 0; i < personnel-2; i++) {
-//                moneyList.add(restMoney);
-//            }
-
-//            System.out.println(firstMoney);
-//            System.out.println(secondMoney);
-//            System.out.println(restMoney);
-
-
-//        }
-
+    public void tryValidation(BigDecimal amounts, BigDecimal personnel){
+        if (amounts.compareTo(personnel) < 1)
+            throw new RuntimeException("Exception 발생. 금액보다 인원수가 클 수 없습니다.");
+        else if(amounts == personnel)
+            throw new RuntimeException("Exception 발생. 금액과 인원수가 같을 수 없습니다.");
     }
+
+
+    private ArrayList divide(BigDecimal amounts, BigDecimal personnel) {
+        ArrayList amountsList = new ArrayList<Integer>();
+
+        BigDecimal remainder = amounts.remainder(personnel);
+        BigDecimal divideAmounts = amounts.divide(personnel,0,BigDecimal.ROUND_DOWN);
+
+        if (amounts.compareTo(BigDecimal.ONE) > 1 || personnel.compareTo(BigDecimal.ONE) > 1 )
+            amountsList.add(0);
+        else if (personnel == BigDecimal.ONE)
+            amountsList.add(amounts.intValue());
+        else {
+            int cnt = remainder.compareTo(BigDecimal.ZERO) == 0 ? personnel.intValue() : personnel.intValue() - 1;
+
+            for (int i=0; cnt > i; i++)
+                amountsList.add(divideAmounts.intValue());
+
+            if (remainder.compareTo(BigDecimal.ZERO) != 0)    // 나중에 사용자에게 선택권을 준다.
+                amountsList.add((divideAmounts.add(remainder)).intValue());
+
+        }
+        return amountsList;
+    }
+
 
 }
